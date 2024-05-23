@@ -23,6 +23,8 @@ I created a comprehensive project that capture and maps network traffic using Wi
   python map_generator.py
 3. Open `network_map.html` to view the network traffic on Google Maps.
 
+![Screenshot_network_map](https://github.com/MenakaGodakanda/network-tracking/assets/156875412/94f951f1-075b-4bf9-8075-d6ca24b174df)
+
 ## License
 
 This project is licensed under the MIT License.
