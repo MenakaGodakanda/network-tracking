@@ -56,13 +56,3 @@ This project used Windows operating system environment.
 # 4. Write a README.md
 
 Inside the `network-tracking` directory, create a file named `README.md`.
-
-# 5. Create File Structure
-
-The project directory (`network-tracking`) should look like this:
-
-network-tracking/
-├── GeoLite2-City.mmdb
-├── network_traffic.pcap
-├── map_generator.py
-└── README.md
