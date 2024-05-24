@@ -26,7 +26,7 @@ I created a comprehensive project that capture and maps network traffic using Wi
 2. Place the `map_generator.py`, `wire.pcap`, `GeoLite2-City.mmdb` files into a same directory.
 3. Replace source IP address in the `map_generator.py` with your public IP address. You can find the public IP address of your computer by visiting one of these websites: (<a href="https://www.whatsmyip.org/">whatsmyip.org</a>  <a href="https://www.whatismyip.com/">whatismyip.com</a>): <br>
 srcip = 'x.x.x.x'
-4. Run the Python script to generate the map: <br>
+4. Run the Python script to generate the `output.kml` file: <br>
   python map_generator.py
 3. `map_generator.py` will create `output.kml` and verify it for valid placemark entries.
 4. Open <a href="https://www.google.com/maps/">Google My Maps</a> and upload `output.kml` to view the network traffic on Google Maps.
