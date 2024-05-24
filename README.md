@@ -1,6 +1,6 @@
 # Network Tracking Using Wireshark and Google Maps
 
-I created a comprehensive project that capture and maps network traffic using Wireshark and Google Maps on Windows operating system. This project demonstrates my ability to work with network analysis tools, python scripting, and data visualization. This project captures network traffic using Wireshark, extracts IP addresses from the captured data, and maps their geolocations using the GeoLite2 database on Google Maps.
+I created a comprehensive project that capture and maps network traffic using Wireshark and Google Maps on Windows operating system. This project demonstrates my ability to work with network analysis tools, python scripting, and data visualization. This project captures network traffic using Wireshark, extracts IP addresses from the captured data, and maps their geolocations using the GeoLite2-City database on Google Maps.
 
 ## Tools and Libraries
 
