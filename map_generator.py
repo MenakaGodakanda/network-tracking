@@ -1,51 +1,87 @@
-import pyshark
+import dpkt
+import socket
 import geoip2.database
-import folium
+import ipaddress
 
-# Load GeoLite2 database
-geoip_reader = geoip2.database.Reader('GeoLite2-City.mmdb')
+# Initialize the reader for the MaxMind GeoLite2 database
+reader = geoip2.database.Reader('GeoLite2-City.mmdb')
 
-# Function to get geolocation from IP address
-def get_geolocation(ip):
- try:
-     response = geoip_reader.city(ip)
-     return {
-         "latitude": response.location.latitude,
-         "longitude": response.location.longitude,
-         "city": response.city.name,
-         "country": response.country.name
-     }
- except geoip2.errors.AddressNotFoundError:
-     return None
+# Check for private IP
+def is_private_ip(ip):
+    # Check if the IP address is private
+    return ipaddress.ip_address(ip).is_private
 
-# Read the pcap file
-pcap_file = 'network_traffic.pcap'
-capture = pyshark.FileCapture(pcap_file)
+# Generate KML for IP Pair
+def retKML(dstip):
+    srcip = 'x.x.x.x'
+    try:
+        # Skip private IP addresses
+        if is_private_ip(dstip):
+            return ''
+        
+        dst = reader.city(dstip)
+        src = reader.city(srcip)
+        
+        dstlongitude = dst.location.longitude
+        dstlatitude = dst.location.latitude
+        srclongitude = src.location.longitude
+        srclatitude = src.location.latitude
+        
+        # Format KML data
+        kml = (
+            '<Placemark>\n'
+            '<name>%s</name>\n'
+            '<extrude>1</extrude>\n'
+            '<tessellate>1</tessellate>\n'
+            '<styleUrl>#transBluePoly</styleUrl>\n'
+            '<LineString>\n'
+            '<coordinates>%6f,%6f %6f,%6f</coordinates>\n'
+            '</LineString>\n'
+            '</Placemark>\n'
+        ) % (dstip, dstlongitude, dstlatitude, srclongitude, srclatitude)
+        
+        return kml
+    except geoip2.errors.AddressNotFoundError:
+        print(f"Address not found in database: {dstip}")
+        return ''
+    except Exception as e:
+        print(f"Error processing IP {dstip}: {e}")
+        return ''
 
-# Extract IP addresses
-ip_addresses = set()
-for packet in capture:
- if 'IP' in packet:
-     ip_addresses.add(packet.ip.src)
-     ip_addresses.add(packet.ip.dst)
+# Process PCAP File and Generate KML
+def plotIPs(pcap):
+    kmlPts = ''
+    for (ts, buf) in pcap:
+        try:
+            eth = dpkt.ethernet.Ethernet(buf)
+            if isinstance(eth.data, dpkt.ip.IP):
+                ip = eth.data
+                dst = socket.inet_ntoa(ip.dst)
+                KML = retKML(dst)
+                kmlPts += KML
+        except Exception as e:
+            print(f"Error processing packet: {e}")
+            continue
+    return kmlPts
 
-# Get geolocation data
-geolocations = []
-for ip in ip_addresses:
- geo_info = get_geolocation(ip)
- if geo_info:
-     geolocations.append(geo_info)
+def main():
+    # Open the pcap file
+    with open('wire.pcap', 'rb') as f:
+        pcap = dpkt.pcap.Reader(f)
+        kmlheader = '<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n' \
+                    '<Style id="transBluePoly">' \
+                    '<LineStyle>' \
+                    '<width>1.5</width>' \
+                    '<color>501400E6</color>' \
+                    '</LineStyle>' \
+                    '</Style>'
+        kmlfooter = '</Document>\n</kml>\n'
+        kmldoc = kmlheader + plotIPs(pcap) + kmlfooter
+        print(kmldoc)
+        
+        # Save the KML data to a file
+        with open('output.kml', 'w') as kmlfile:
+            kmlfile.write(kmldoc)
 
-# Create a map
-map = folium.Map(location=[0, 0], zoom_start=2)
-
-# Add markers to the map
-for location in geolocations:
-    if location['latitude'] is not None and location['longitude'] is not None:
-        folium.Marker(
-            [location['latitude'], location['longitude']],
-            popup=f"{location['city']}, {location['country']}"
-        ).add_to(map)
-
-# Save the map to an HTML file
-map.save('network_map.html')
+if __name__ == '__main__':
+    main()
