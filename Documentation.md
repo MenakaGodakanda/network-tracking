@@ -29,14 +29,14 @@ This project used Windows operating system environment.
 4. **Required Python Libraries:**
    - Open a terminal.
    - Install necessary Python libraries by running:
-     pip3 install pyshark geoip2 folium
+      pip install dpkt geoip2
 
 # 2. Capture Network Traffic with Wireshark
 
 1. Open Wireshark.
 2. Start capturing packets on the desired network interface (e.g., `eth0`).
 3. Let it run for a sufficient amount of time to capture relevant traffic.
-4. Stop the capture and save the file in `.pcap` format (e.g., `network_traffic.pcap`).
+4. Stop the capture and save the file as `wire.pcap`.
 
 # 3. Process the PCAP File and Geolocate IPs
 
@@ -49,7 +49,10 @@ This project used Windows operating system environment.
 2. **Download GeoLite2 database:**
    - Place the downloaded `GeoLite2-City.mmdb` file into the `network-tracking` directory.
 
-3. **Create the Python script:**
+3. **Place the Captured Network Traffic:**
+   - Place the `wire.pcap` file into the `network-tracking` directory.
+  
+4. **Create the Python script:**
    - Inside the `network-tracking` directory, create a file named `map_generator.py`.
    - Open `map_generator.py` in a text editor and write the python script to extract IP addresses and geolocate them.
    
