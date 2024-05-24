@@ -23,12 +23,12 @@ This project used Windows operating system environment.
 
 3. **Python and pip:**
    - Open a terminal.
-   - Install Python and pip by running:
+   - Install Python and pip by running:<br>
      sudo apt install python3 python3-pip
 
 4. **Required Python Libraries:**
    - Open a terminal.
-   - Install necessary Python libraries by running:
+   - Install necessary Python libraries by running:<br>
       pip install dpkt geoip2
 
 # 2. Capture Network Traffic with Wireshark
