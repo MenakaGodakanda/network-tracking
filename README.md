@@ -29,7 +29,7 @@ srcip = 'x.x.x.x'
 4. Run the Python script to generate the `output.kml` file: <br>
   python map_generator.py
 3. `map_generator.py` will create `output.kml` and verify it for valid placemark entries.
-4. Open <a href="https://www.google.com/maps/">Google My Maps</a> and upload `output.kml` to view the network traffic on Google Maps.
+4. Open <a href="https://www.google.com/maps/d/">Google My Maps</a> and upload `output.kml` to view the network traffic on Google Maps.
 
 ![1](https://github.com/MenakaGodakanda/network-tracking/assets/156875412/36fafb9b-c0ff-4f02-b759-4ceb12b4ae13)
 ![2](https://github.com/MenakaGodakanda/network-tracking/assets/156875412/b5912222-bc82-4f85-a26e-91090e3f1548)
